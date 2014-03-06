@@ -1,0 +1,58 @@
+Opciones Menú:
+
+>>>AUTENTICAR USUARIO
+	Acceso LDAP (https):
+	Formulario: usuario, password
+	Proceso: 
+		- comprueba si los datos del usuario y contraseña son válidos en el LDAP.
+		- Si no está en la base de datos local, copia los datos de LDAP y completa o pide los datos que faltan.
+		- Si el usuario introduce e-mail lo actualiza en el LDAP.
+
+
+ADMINISTRACIÓN
+--------------
+
+>>> Dar de alta equipamiento
+ZONAS		EQUIPOS
+desplegable	desplegable
++ - []		+ - [  ]
+			Patrón creación: [a21eq][00] hasta [30]
+						  [GENERAR EQUIPOS]
+
+>>> Dar de alta técnicos
+ZONAS		Técnicos				Miembros LDAP
+
+|---------|	|---------|	[<==]	|---------|	
+|		|	|		|			|		|
+|		|	|		|			|		|
+|---------|	|---------|	[==>]	|---------|
++ [ ]							Buscar [ ] [Limpiar] Busca en el LDAP por Ajax.
+-								
+
+>>> Dar de alta respuestas programadas.
+
+>>> Revisar Usuarios sistema.
+							
+http://www.ostickethacks.com/
+
+------------------------------
+>>>COMUNICAR INCIDENCIA
+	AUTENTICAR USUARIO.
+	Formulario de comunicación de incidencias.
+
+>>>Mis preferencias
+
+---------------------------------
+>>>MENÚ TÉCNICOS
+---------------------------------
+>>> [DASHBOARD]
+>>> INCIDENCIAS
+	[Abiertas]	[Cerradas]	[Mis tickets]		[Nuevo ticket]
+	Pendientes de resolver (opción de imprimir en PDF)
+	Mis incidencias resueltas (opción de imprimir en PDF).
+
+	A la hora de resolver una incidencia,
+		[Imprimir] [Editar]  [Borrar]  [Cerrar] [Transferir]
+										Usuario + Razones transferencia (se añaden al histórico).
+		http://www.ostickethacks.com/demo/scp/tickets.php?id=2282
+
