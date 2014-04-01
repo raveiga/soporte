@@ -1,4 +1,5 @@
 <?php
+
 if (!empty($_POST['usuario']))
 {
 	// Autenticación contra el LDAP

@@ -1,0 +1,8 @@
+- Definir en lib/config.php un string de usuarios administradores.
+	Por ejemplo: define('ADMINS', 'veiga,admin,administrador');
+
+- En la Sección de acceso a Técnicos.
+	- Hacer login del usuario.
+	- Si se valida correctamente, comprobar si el usuario existe en la tabla de usuarios.
+		- Si no existe lo inserta en la tabla de usuarios cubriendo los datos conocidos del ldap. (para admins privilegio=1).
+		- A continuación le conecta con la sección de edición de datos, para que revise sus datos y los confirme.

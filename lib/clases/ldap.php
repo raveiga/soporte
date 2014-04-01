@@ -95,7 +95,7 @@ class Ldap
 	 * @param string $password
 	 * @return boolean
 	 */
-	public function autenticarUsuario($usuario, $password)
+	public function autenticarUsuario($usuario=false, $password=false)
 	{
 		// Intentamos autenticarnos
 		// Para autenticación anónima:
@@ -112,7 +112,7 @@ class Ldap
 		// Para autenticación anónima:
 		// $autenticacion=ldap_bind($this->_conexion);
 
-		if (!empty($usuario) && !empty($password))
+		if ($usuario!=false && $password!=false)
 		{
 			$autenticacion = @ldap_bind($this->_conexion, "$usuario@$this->_dominio", $password);
 
@@ -121,6 +121,8 @@ class Ldap
 				return true;
 			}
 		}
+		else	// Autenticación anónima.
+			$autenticacion = @ldap_bind($this->_conexion);
 
 		return false;
 	}
@@ -277,6 +279,61 @@ class Ldap
 		ldap_modify($this->_conexion, $dn, $nuevosdatos); // Los nuevos datos van en un array.
 	}
 
+	/**
+	 * Se encarga de buscar en todo el LDAP usuarios que contengan en name, displayname o givenname el $textoBuscar 
+	 * 
+	 * @param string $textoBuscar Ejemplo: "lopez"
+	 * @param string $campoOrdenacion Ejemplo: "displayname"
+	 * @param array $camposMostrar  Ejemplo: array("cn", "displayname", "mail") Si no se pasa coge los campos por defecto.
+	 * @return string JSON o 0 si no hay ningún miembro en el grupo.
+	 */
+	public function buscarUsuariosEnLdap($textoBuscar, $campoOrdenacion, $camposMostrar = false)
+	{
+		if (!$camposMostrar)
+		{
+			$camposMostrar = $this->_camposMostrar;
+		}
+
+		$unidadOrganizativa=$this->_baseDN;
+		
+		$filtroBusqueda= "(|(name=*$textoBuscar*)(displayname=*$textoBuscar*)(givenname=*$textoBuscar*))";
+
+		$busqueda = @ldap_search($this->_conexion, $unidadOrganizativa, $filtroBusqueda, $camposMostrar);
+		if ($busqueda)
+		{
+
+			// Ordenamos el array de resultados.
+			ldap_sort($this->_conexion, $busqueda, $campoOrdenacion);
+			$datos = '';
+			$mijson = array();
+
+			for ($entrada = ldap_first_entry($this->_conexion, $busqueda); $entrada != false; $entrada = ldap_next_entry($this->_conexion, $entrada))
+			{
+
+				foreach ($camposMostrar as $campo)
+				{
+					$atributos = @ldap_get_values($this->_conexion, $entrada, $campo);
+					if ($atributos['count'] != 0)
+					{
+						$datos[$campo] = $atributos[0];
+					}
+				}
+
+				// Si hay datos añadimos el array asociativo al array final.
+				if ($datos != '')
+				{
+					// array_ma Se usa para evitar problemas al convertir a JSON las tildes y Ñ y demás.
+					$mijson[] = array_map('convertir_UTF8', $datos);
+				}
+			}
+			// Devuelve el objeto JSON con los datos solicitados.
+			return json_encode($mijson);
+		} else
+		{
+			return 0;
+		}
+	}
+	
 	/* Algunos campos LDAP.
 	  objectClass
 	  cn
@@ -317,7 +374,9 @@ class Ldap
 //////////////////////////////
 // EJEMPLOS DE USO.
 //////////////////////////////
-?>
+
+/**
+
 <!DOCTYPE html>
 <html lang="es">
 	<head>
@@ -329,9 +388,12 @@ $ldap = new ldap("10.0.4.1", "sanclemente.local");
 if ($ldap->autenticarUsuario("alumno", "abc123.."))
 {
 
-	$resultado = $ldap->obtenerMiembrosOU("OU=dawMP,OU=Alumnos,OU=SC-Usuarios", "displayname", array("cn", "displayname", "mail"));
-	$resultado = json_decode($resultado);
+	// $resultado = $ldap->obtenerMiembrosOU("OU=dawMP,OU=Alumnos,OU=SC-Usuarios", "displayname", array("cn", "displayname", "mail"));
+	// $resultado = json_decode($resultado);
 
+	$resultado = $ldap->buscarUsuariosEnLdap("veiga", "displayname", array("cn", "displayname", "mail"));
+	$resultado = json_decode($resultado);
+	
 	echo "<pre>";
 	print_r($resultado);
 	echo "</pre>";
@@ -351,3 +413,5 @@ if ($ldap->autenticarUsuario("alumno", "abc123.."))
 ?>
 	</body>
 </html>
+**/
+?>

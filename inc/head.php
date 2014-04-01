@@ -10,6 +10,10 @@
 	<!--[if lt IE 9]>
 		<script src="js/modernizr.custom.js"></script>
 	<![endif]-->
+	
+	<!--
 	<script src="js/jquery.carouFredSel-5.5.0-packed.js" type="text/javascript"></script>
+
 	<script src="js/functions.js" type="text/javascript"></script>
+  -->
 </head>
