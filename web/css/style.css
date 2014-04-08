@@ -17,6 +17,10 @@ body {
 	display:none;
 }
 
+img[src*='delete'],img[src*='edit']{
+		cursor:pointer;
+}
+
 #mensajes{
 	width:300px;
 	height: 25px;

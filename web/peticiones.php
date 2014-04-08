@@ -81,5 +81,60 @@ switch ($_GET['op'])
 		break;
 
 
+	case 3: // Edición de datos de usuario.
+// Empleamos la variable de $_SESSION['usuariofaseregistro'] para insertar sus datos.
+		$sql = sprintf("update %susuarios set nombre='%s',apellidos='%s',email='%s',mensajeria='%s',telefono='%s',preferenciacomunicacion='%s',rangonomolestar='%s' where idusuario='%s'", BD_PREFIJO_TABLAS, $mibase->depurarCampo($_POST['nombre']), $mibase->depurarCampo($_POST['apellidos']), $mibase->depurarCampo($_POST['email']), $mibase->depurarCampo($_POST['mensajeria']), $mibase->depurarCampo($_POST['telefono']), $mibase->depurarCampo($_POST['preferenciacomunicacion']), $mibase->depurarCampo($_POST['rangonomolestar']), $_SESSION['idusuario']);
+
+		if ($mibase->ejecutarSQL($sql) == 'ok')
+		{
+			$_SESSION['nombre'] = $mibase->depurarCampo($_POST['nombre']);
+			$_SESSION['apellidos'] = $mibase->depurarCampo($_POST['apellidos']);
+			$_SESSION['email'] = $mibase->depurarCampo($_POST['email']);
+			$_SESSION['mensajeria'] = $mibase->depurarCampo($_POST['mensajeria']);
+			$_SESSION['telefono'] = $mibase->depurarCampo($_POST['telefono']);
+			$_SESSION['preferenciacomunicacion'] = $mibase->depurarCampo($_POST['preferenciacomunicacion']);
+			$_SESSION['rangonomolestar'] = $mibase->depurarCampo($_POST['rangonomolestar']);
+			echo 'ok';
+		}
+		else
+			echo 'error';
+
+		break;
+
+	
+	case 4: // Carga de zonas de control.
+		$sql=sprintf("select * from %szonas order by nombrezona",BD_PREFIJO_TABLAS);
+		
+		$resultado=json_decode($mibase->ejecutarSQL($sql));
+		if (!empty($resultado))
+		{
+			for ($i=0;$i<count($resultado);$i++)
+			{
+				echo "<tr align='center' id='".$resultado[$i]->idzona."'><td>".$resultado[$i]->nombrezona."</td><td>".$resultado[$i]->descripcion."</td><td><img src='img/doc_edit_icon&16.png'/></td><td><img src='img/delete_icon&16.png'/></td></tr>";
+			}
+		}
+		else
+		{
+			echo "";
+		}
+		
+		break;
+
+	case 5: // Insertar zona en base de datos.
+		$sql=sprintf("insert into %szonas(nombrezona,descripcion) values('%s','%s')",BD_PREFIJO_TABLAS,$mibase->depurarCampo($_POST['nombrezona']),$mibase->depurarCampo($_POST['descripcion']));
+		
+		if ($mibase->ejecutarSQL($sql) =='ok')
+		{
+			$sql=sprintf("select max(idzona) as maximo from %szonas",BD_PREFIJO_TABLAS);
+			$resultado=json_decode($mibase->ejecutarSQL($sql));
+			echo $resultado[0]->maximo;
+		}
+		break;
+		
+	case 6: //Borrado de una zona
+		$sql=sprintf("delete from %szonas where idzona='%s'",BD_PREFIJO_TABLAS,$mibase->depurarCampo($_POST['idzona']));
+		echo $mibase->ejecutarSQL($sql);
+		
+		break;
 }
 ?>

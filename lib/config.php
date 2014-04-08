@@ -1,8 +1,8 @@
 <?php
 // Bases de datos.
 define('BD_SERVIDOR', $_SERVER['HTTP_HOST']);
-define('BD_NOMBRE', '');
-define('BD_USUARIO', '');
+define('BD_NOMBRE', 'c2base2');
+define('BD_USUARIO', 'c2mysql');
 define('BD_PASSWORD', '');
 define('BD_PREFIJO_TABLAS', 'soporte_');
 
