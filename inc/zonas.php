@@ -99,5 +99,67 @@
 		});
 
 
+// Hacemos click en imagenes de edición.
+		$("#milistado").on("click", "img[src*='edit']", function()
+		{
+			// Comprobamos si hay alguna fila en edición.
+			if ($("input#edicion").length!=0)
+				{
+					filapadre.html(contenidoOriginalFila);
+				}
+		
+			// Vamos a recuperar el id de la fila a editar.
+			filapadre = $(this).parent().parent();
+			idzona = filapadre.attr("id");
+			contenidoOriginalFila=filapadre.html();
+
+			//Recorremos las celdas y sustituimos por sus input.
+			filapadre.find("td").slice(0, 2).each(function()
+			{
+				$(this).html("<input id='edicion' type='text' value='" + $(this).text() + "'/>");
+			});
+
+			// Al pulsar ENTER petición Ajax.
+			$("input").keyup(function(evento)
+			{
+				if (evento.which == 13)
+				{
+					if ($("input:eq(0)").val() != '')
+					{	// Ajax para grabar.
+						$("#preloader").show();
+
+						// Petición ajax de edición OP=7
+						$.post("peticiones.php?op=7", {nombrezona: $("input:eq(0)").val(), descripcion: $("input:eq(1)").val(), idzona: idzona}, function(resultado) {
+							if (resultado == 'ok')
+							{
+								// Sacamos los input..
+								filapadre.find("td").slice(0, 2).each(function()
+								{
+									$(this).html($("input",this).val());
+								});
+
+								// Ocultamos el spinner
+								$("#preloader").hide();
+							}
+
+						});
+
+
+					}
+
+
+
+
+				}
+			});
+
+
+
+
+
+		});
+
+
+
 	});
 </script>

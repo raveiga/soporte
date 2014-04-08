@@ -101,40 +101,97 @@ switch ($_GET['op'])
 
 		break;
 
-	
+
 	case 4: // Carga de zonas de control.
-		$sql=sprintf("select * from %szonas order by nombrezona",BD_PREFIJO_TABLAS);
-		
-		$resultado=json_decode($mibase->ejecutarSQL($sql));
+		$sql = sprintf("select * from %szonas order by nombrezona", BD_PREFIJO_TABLAS);
+
+		$resultado = json_decode($mibase->ejecutarSQL($sql));
 		if (!empty($resultado))
 		{
-			for ($i=0;$i<count($resultado);$i++)
+			for ($i = 0; $i < count($resultado); $i++)
 			{
-				echo "<tr align='center' id='".$resultado[$i]->idzona."'><td>".$resultado[$i]->nombrezona."</td><td>".$resultado[$i]->descripcion."</td><td><img src='img/doc_edit_icon&16.png'/></td><td><img src='img/delete_icon&16.png'/></td></tr>";
+				echo "<tr align='center' id='" . $resultado[$i]->idzona . "'><td>" . $resultado[$i]->nombrezona . "</td><td>" . $resultado[$i]->descripcion . "</td><td><img src='img/doc_edit_icon&16.png'/></td><td><img src='img/delete_icon&16.png'/></td></tr>";
 			}
-		}
-		else
+		} else
 		{
 			echo "";
 		}
-		
+
 		break;
 
 	case 5: // Insertar zona en base de datos.
-		$sql=sprintf("insert into %szonas(nombrezona,descripcion) values('%s','%s')",BD_PREFIJO_TABLAS,$mibase->depurarCampo($_POST['nombrezona']),$mibase->depurarCampo($_POST['descripcion']));
-		
-		if ($mibase->ejecutarSQL($sql) =='ok')
+		$sql = sprintf("insert into %szonas(nombrezona,descripcion) values('%s','%s')", BD_PREFIJO_TABLAS, $mibase->depurarCampo($_POST['nombrezona']), $mibase->depurarCampo($_POST['descripcion']));
+
+		if ($mibase->ejecutarSQL($sql) == 'ok')
 		{
-			$sql=sprintf("select max(idzona) as maximo from %szonas",BD_PREFIJO_TABLAS);
-			$resultado=json_decode($mibase->ejecutarSQL($sql));
+			$sql = sprintf("select max(idzona) as maximo from %szonas", BD_PREFIJO_TABLAS);
+			$resultado = json_decode($mibase->ejecutarSQL($sql));
 			echo $resultado[0]->maximo;
 		}
 		break;
-		
+
 	case 6: //Borrado de una zona
-		$sql=sprintf("delete from %szonas where idzona='%s'",BD_PREFIJO_TABLAS,$mibase->depurarCampo($_POST['idzona']));
+		$sql = sprintf("delete from %szonas where idzona='%s'", BD_PREFIJO_TABLAS, $mibase->depurarCampo($_POST['idzona']));
 		echo $mibase->ejecutarSQL($sql);
+		break;
+
+	case 7: //Edición de una zona.
+		$sql = sprintf("update %szonas set nombrezona='%s',descripcion='%s' where idzona='%s'", BD_PREFIJO_TABLAS, $mibase->depurarCampo($_POST['nombrezona']), $mibase->depurarCampo($_POST['descripcion']), $mibase->depurarCampo($_POST['idzona']));
+		echo $mibase->ejecutarSQL($sql);
+		break;
+
+	case 14: // Listado de equipos en formato HTML <TR><TD>....
+			$sql = sprintf("SELECT * FROM %sequipamiento as t1 left join %szonas as t2 on t1.zona=t2.idzona order by t1.idmaquina", BD_PREFIJO_TABLAS, BD_PREFIJO_TABLAS);
 		
+		$resultado = json_decode($mibase->ejecutarSQL($sql));
+
+		if (!empty($resultado))
+		{
+			for ($i = 0; $i < count($resultado); $i++)
+			{
+				echo "<tr align='center' id='" . $resultado[$i]->idmaquina . "'><td>" . $resultado[$i]->idmaquina . "</td><td>" . $resultado[$i]->ip . "</td><td>" . $resultado[$i]->descrip . "</td>";
+				if ($resultado[$i]->zona == 0)
+				{
+					echo "<td id='0'>Indeterminada</td>";
+				} else
+				{
+					echo "<td id='" . $resultado[$i]->zona . "'>" . $resultado[$i]->nombrezona . "</td>";
+				}
+
+				echo "<td><img src='img/doc_edit_icon&16.png'/></td><td><img src='img/delete_icon&16.png'/></td></tr>";
+			}
+		} else
+		{
+			echo "";
+		}
+		break;
+
+
+	case 15: // Inserción de equipo. // devuelve el id de máquina si todo ok.
+		$sql = sprintf("insert into %sequipamiento(idmaquina,ip,descrip,zona) values ('%s','%s','%s','%s')", BD_PREFIJO_TABLAS, strtolower($mibase->depurarCampo($_POST['idmaquina'])), $mibase->depurarCampo($_POST['ip']), $mibase->depurarCampo($_POST['descrip']), $mibase->depurarCampo($_POST['zona']));
+
+		if ($mibase->ejecutarSQL($sql) == 'ok')
+		{
+			echo strtolower($_POST['idmaquina']);
+		} else
+		{
+			echo 'error';
+		}
+		break;
+
+
+
+	case 18: // Lista de zonas disponibles en formato HTML campo SELECT
+		$sql = sprintf("select * from %szonas order by nombrezona ASC", BD_PREFIJO_TABLAS);
+		$datos = json_decode($mibase->ejecutarSQL($sql));
+
+		echo '<select name="zonas" id="zonas">';
+		echo '<option value="0">Indeterminada</option>';
+		for ($i = 0; $i < count($datos); $i++)
+		{
+			echo "<option value='{$datos[$i]->idzona}'>{$datos[$i]->nombrezona}</option>";
+		}
+		echo '</select>';
 		break;
 }
 ?>

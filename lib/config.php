@@ -3,7 +3,7 @@
 define('BD_SERVIDOR', $_SERVER['HTTP_HOST']);
 define('BD_NOMBRE', 'c2base2');
 define('BD_USUARIO', 'c2mysql');
-define('BD_PASSWORD', '');
+define('BD_PASSWORD', 'abc123.');
 define('BD_PREFIJO_TABLAS', 'soporte_');
 
 // Datos LDAP.
@@ -19,7 +19,6 @@ define('RUTA_INC', RAIZ . 'inc'. DIRECTORY_SEPARATOR);		//....soporte/lib/clases
 // Rutas web
 define('SCHEME', (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') ? 'https' : 'http');
 define('SERVIDOR', SCHEME . '://' . $_SERVER['HTTP_HOST']);
-define('RAIZ_BLOG', SERVIDOR . '/blog/');
 define('RUTA_WEB', RAIZ_BLOG . 'web/');
 define('RUTA_WEB_RSS', RAIZ_BLOG . 'rss/');
 

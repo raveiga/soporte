@@ -4,7 +4,7 @@
 			<fieldset>
 				<legend>Autenticación de Usuarios</legend>
 				<label for="usuario">Usuario: *</label>
-				<input type="text" id="usuario" placeholder="...en <?php echo LDAP_DOMINIO; ?>" required/>
+				<input type="text" id="usuario" placeholder="...en <?php echo LDAP_DOMINIO; ?>" required autofocus />
 				<label for="password">Contraseña: *</label>
 				<input type="password" id="password" required/>
 				<input type="submit" id="acceder" value="Acceder" />
