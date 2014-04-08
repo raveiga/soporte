@@ -69,34 +69,34 @@
 		});
 
 
-	// Hacemos click en imagenes de borrado.
-			$("#milistado").on("click", "img[src*='delete']", function()
+		// Hacemos click en imagenes de borrado.
+		$("#milistado").on("click", "img[src*='delete']", function()
+		{
+
+			// Vamos a recuperar el id de la fila a borrar.
+			filapadre = $(this).parent().parent();
+			idzona = filapadre.attr("id");
+
+			// Preguntamos si quiere borrar la zona
+			if (confirm("¿Desea borrar esta zona?"))
 			{
+				// Activamos spinner
+				$("#preloader").show();
 
-				// Vamos a recuperar el id de la fila a borrar.
-				filapadre = $(this).parent().parent();
-				idzona = filapadre.attr("id");
-
-				// Preguntamos si quiere borrar la zona
-				if (confirm("¿Desea borrar esta zona?"))
+				// hacemos petición ajax
+				$.post("peticiones.php?op=6", {idzona: idzona}, function(respuesta)
 				{
-					// Activamos spinner
-					$("#preloader").show();
-
-					// hacemos petición ajax
-					$.post("peticiones.php?op=6", {idzona: idzona}, function(respuesta)
+					if (respuesta == 'ok')
 					{
-						if (respuesta == 'ok')
+						filapadre.css("background", "#029cdb").fadeOut("slow", function()
 						{
-							filapadre.css("background", "#029cdb").fadeOut("slow", function()
-							{
-								$(this).remove();
-								$("#preloader").hide();
-							});
-						}
-					});
-				}
-			});
+							$(this).remove();
+							$("#preloader").hide();
+						});
+					}
+				});
+			}
+		});
 
 
 	});

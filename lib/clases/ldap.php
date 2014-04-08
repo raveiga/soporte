@@ -371,13 +371,13 @@ class Ldap
 // Fin programación clase LDAP.
 }
 
+/*
 //////////////////////////////
-// EJEMPLOS DE USO.
+// EJEMPLOS DE USO DE LA CLASE LDAP
 //////////////////////////////
 
-/**
 
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="es">
 	<head>
 		<meta charset="utf-8" />
@@ -391,14 +391,14 @@ if ($ldap->autenticarUsuario("alumno", "abc123.."))
 	// $resultado = $ldap->obtenerMiembrosOU("OU=dawMP,OU=Alumnos,OU=SC-Usuarios", "displayname", array("cn", "displayname", "mail"));
 	// $resultado = json_decode($resultado);
 
-	$resultado = $ldap->buscarUsuariosEnLdap("veiga", "displayname", array("cn", "displayname", "mail"));
+	$resultado = $ldap->buscarUsuariosEnLdap("alumno", "displayname", array("cn", "displayname", "mail"));
 	$resultado = json_decode($resultado);
 	
 	echo "<pre>";
 	print_r($resultado);
 	echo "</pre>";
 
-	if ($ldap->chequearPertenenciaOU("veiga", "OU=SC-Usuarios"))
+	if ($ldap->chequearPertenenciaOU("alumno", "OU=SC-Usuarios"))
 	{
 		echo "Pertenece a SC-Usuarios.<br/>";
 	} else
@@ -406,12 +406,12 @@ if ($ldap->autenticarUsuario("alumno", "abc123.."))
 		echo "No Pertenece.<br/>";
 	}
 
-	$datos = $ldap->obtenerInfoUsuario("veiga");
+	$datos = $ldap->obtenerInfoUsuario("alumno");
 	$datos = json_decode($datos);
 	echo $datos->description;
 }
 ?>
 	</body>
 </html>
-**/
+ */
 ?>
