@@ -16,11 +16,6 @@ define('RUTA_LIB', RAIZ . 'lib'. DIRECTORY_SEPARATOR);		//....soporte/lib/
 define('RUTA_CLASES', RUTA_LIB . 'clases'. DIRECTORY_SEPARATOR);	//....soporte/lib/clases/
 define('RUTA_INC', RAIZ . 'inc'. DIRECTORY_SEPARATOR);		//....soporte/lib/clases/
 
-// Rutas web
-define('SCHEME', (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') ? 'https' : 'http');
-define('SERVIDOR', SCHEME . '://' . $_SERVER['HTTP_HOST']);
-define('RUTA_WEB', RAIZ_BLOG . 'web/');
-define('RUTA_WEB_RSS', RAIZ_BLOG . 'rss/');
-
+// Constante de administrador del sistema (usuarios del LDAP).
 define('ADMINS','veiga administrador admin');	// Separados por un espacio.
 ?>

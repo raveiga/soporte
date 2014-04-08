@@ -43,9 +43,7 @@
 					if (resultados == 'ok') // Acceso correcto: redireccionamos al index.html.
 					{
 						$("#mensajes").html("Datos actualizados correctamente.").css("background", "green").fadeIn(300).delay(400).fadeOut(700, function() {
-							$("#preloader").hide(function() {
-								//document.location = "index.html";
-							});
+							$("#preloader").hide();
 						});
 
 					}
