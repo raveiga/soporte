@@ -7,6 +7,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Raleway:400,900,800,700,600,500,300,200,100' rel='stylesheet' type='text/css'>
 
 	<script src="js/jquery-2.1.0.min.js" type="text/javascript"></script>
+	<script src="js/ajaxq.js" type="text/javascript"></script>
 	<!--[if lt IE 9]>
 		<script src="js/modernizr.custom.js"></script>
 	<![endif]-->

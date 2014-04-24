@@ -17,10 +17,6 @@ body {
 	display:none;
 }
 
-img[src*='delete'],img[src*='edit']{
-		cursor:pointer;
-}
-
 #mensajes{
 	width:300px;
 	height: 25px;
@@ -43,6 +39,10 @@ img[src*='delete'],img[src*='edit']{
 	cursor:pointer;
 }
 
+img[src*='edit'],img[src*='delete']
+{
+	cursor:pointer;
+}
 .zona{
 	width:260px;
 	height:300px;
@@ -177,7 +177,7 @@ textarea { overflow: auto; }
 
 #navigation { padding:0 21px;  margin-bottom: 15px; }
 #navigation ul { list-style:none; list-style-position: outside; }
-#navigation ul li { padding: 0 10px; float: left; font-family: 'Raleway', sans-serif; font-size: 15px; font-weight: 500; }
+#navigation ul li { padding: 0 8px; float: left; font-family: 'Raleway', sans-serif; font-size: 12px; font-weight: 500; }
 #navigation ul li:first-child { padding-left: 0; }
 #navigation ul li a { color: #4a4a4a; padding: 0 7px; display:block; height: 21px; line-height: 21px; border: 2px solid transparent; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; -o-border-radius: 3px; }
 #navigation ul li.active a,

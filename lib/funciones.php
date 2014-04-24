@@ -279,4 +279,32 @@ function enviarCorreo($nombreDestinatario, $emailDestinatario, $asunto, $conteni
 	}
 }
 
+/**
+ * Función para resolver nombres de dominio a IP.
+ * 
+ * @param string $nombrehost Nombre del dominio o máquina resolver
+ * @return string "desconocido" o la dirección IP de la máquina.
+ */
+function resolverIP($nombrehost)
+{
+	$host=$nombrehost;
+	
+	if (stripos($host,'.') === false) // No se encontró nombre dominio.
+	{
+		// Autocompletamos con el dominio.local
+		// Se concatena un . al final para que resuelva los
+		// dominios .local que no son dominios estándard en Internet.
+		$ip=  gethostbyname($host.'.'.LDAP_DOMINIO.'.');
+		$host .= '.'.LDAP_DOMINIO.'.';
+	}
+ else
+	{
+	  $ip=  gethostbyname($nombrehost);
+	}
+	
+	if ($ip == $host)
+		return "desconocida";
+	else
+		return $ip;
+}
 ?>
